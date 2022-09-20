@@ -3,50 +3,26 @@ on:
   push:
     paths:
       - "frontend/**"
-      - "backend/**"
     branches:
       - main
   pull_request:
     branches:
-      - master
+      - main
 jobs:
- tests:
-    if: steps.filter.outputs.backend == 'true'
+  docker_image_push:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: dorny/paths-filter@v2
-      id: filter
-      with:
-        filters: |
-          backend:
-            - 'backend/**'
-          frontend:
-            - 'frontend/**'
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-    - name: hamza
-      run: |
-          echo bakcend
-          echo backend
- hamza:         
-    if: steps.filter.outputs.frontend == 'true'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: dorny/paths-filter@v2
-      id: filter
-      with:
-        filters: |
-          backend:
-            - 'backend/**'
-          frontend:
-            - 'frontend/**'
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-    - name: hamza
-      run: |
-          echo frontend
-          echo fr
+      - uses: actions/checkout@v3
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+     # - name: Build, tag, and push docker image to Amazon ECR
+      #  env:
+       #   REGISTRY: docyfy-stage
+        #  REPOSITORY: docyfy
+         # IMAGE_TAG: ${{ steps.short-sha.outputs.sha }-fr
+      - name: hamza
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        
