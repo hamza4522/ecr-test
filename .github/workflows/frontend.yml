@@ -30,4 +30,4 @@ jobs:
       - name: frontend
         run: |
             cd frontend
-            echo hamza
+            cat package.json
