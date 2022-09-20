@@ -17,7 +17,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         env:
-          REGION: us-east-1
+          region: us-east-1
           REGISTRY: 712972998930.dkr.ecr.us-east-1.amazonaws.com/ecr
           REPOSITORY: ecr-test
           IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}-fr
