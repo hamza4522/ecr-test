@@ -6,10 +6,10 @@ on:
     - 'frontend/**'
     - 'backend/**'
     branches:
-      - master  
+      - main  
   pull_request:
     branches:
-      - master
+      - main
 jobs:
   changes:
     runs-on: ubuntu-latest
