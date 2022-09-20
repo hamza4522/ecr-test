@@ -1,6 +1,9 @@
 name: docyfy-ecr-stage
 on:
   push:
+    paths:
+      - "frontend/**"
+      - "backend/**"
     branches:
       - main
   pull_request:
@@ -21,9 +24,20 @@ jobs:
             - 'frontend/**'
     - name: backend tests
       if: steps.filter.outputs.backend == 'true'
-      run: echo backend
-
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: hamza
+        run: |
+          echo bakcend
+          echo backend
     # run only if 'frontend' files were changed
     - name: frontend tests
       if: steps.filter.outputs.frontend == 'true'
-      run: echo fronted       
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1    
+    - name: hamza
+        run: |
+          echo frontend
+          echo front 
