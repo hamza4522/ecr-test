@@ -29,5 +29,5 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
       - name: frontend
         run: |
-            docker build -t 712972998930.dkr.ecr.us-east-1/ecr:latest .
-            docker push 712972998930.dkr.ecr.us-east-1/ecr:latest
+            docker build -t test .
+            docker push test
