@@ -2,51 +2,46 @@ name: docyfy-ecr-stage
 on:
   push:
     paths:
-      - "frontend/**"
-      - "backend/**"
+    - 'frontend/**'
+    - 'backend/**'
     branches:
-      - master
+      - main  
   pull_request:
     branches:
-      - master
+      - main
 jobs:
-  docker_image_push:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+        - uses: actions/checkout@v3
+        - name: test
+          uses: dorny/paths-filter@v2
+          id: filter
+          with:
+           filters: |
+              frontend:
+                - 'frontend/**'
+              backend:
+                - 'backend/**'
+        # JOB to build and test backend code
+  backend:
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: |
-            frontend:
-              - 'frontend/**'
-            backend:
-              - 'backend/**'
-      - name: if changes are in frontend
-        if: steps.filter.outputs.frontend == 'true'
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-      - name: Build, tag, and push docker image to Amazon ECR
-        env:
-          REGISTRY: docyfy-stage
-          REPOSITORY: docyfy
-          IMAGE_TAG: ${{ steps.short-sha.outputs.sha }-fr
+      - uses: actions/checkout@v2
+      - name: ali
+        run : echo hello-world
+
+  # JOB to build and test frontend code
+  frontend:
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
       - name: hamza
-        run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-      - name: if changes are in frontend
-        if: steps.filter.outputs.backend == 'true'
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-      - name: Build, tag, and push docker image to Amazon ECR
-        env:
-          REGISTRY: docyfy-stage
-          REPOSITORY: docyfy
-          IMAGE_TAG: ${{ steps.short-sha.outputs.sha }-back
-      - name: test
-        run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        run: echo hello
