@@ -1,25 +1,29 @@
 name: docyfy-ecr-stage
 on:
   push:
-    paths:
-      - 'frontend/**'
-      - 'backend/**'
     branches:
       - main
   pull_request:
     branches:
       - master
 jobs:
-  docker_image_push:
-    if: steps.changes.outputs.frontend == 'true'
+ tests:
     runs-on: ubuntu-latest
     steps:
-       - name: hamza
-         run: |
-          echo frontend
-          echo haha
-    #    if: steps.changes.outputs.backend == 'true'
-   #   - name: test
-  #      run: |
- #          echo backend
-#           echo haha
+    - uses: actions/checkout@v2
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          backend:
+            - 'backend/**'
+          frontend:
+            - 'frontend/**'
+    - name: backend tests
+      if: steps.filter.outputs.backend == 'true'
+      run: echo backend
+
+    # run only if 'frontend' files were changed
+    - name: frontend tests
+      if: steps.filter.outputs.frontend == 'true'
+      run: echo fronted       
