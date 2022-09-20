@@ -17,10 +17,10 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
      # - name: Build, tag, and push docker image to Amazon ECR
-      #  env:
-       #   REGISTRY: docyfy-stage
-        #  REPOSITORY: docyfy
-         # IMAGE_TAG: ${{ steps.short-sha.outputs.sha }-fr
+        env:
+          REGISTRY: ecr
+          REPOSITORY: ecr-test
+          IMAGE_TAG: ${{ steps.short-sha.outputs.sha }-fr
       - name: hamza
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
