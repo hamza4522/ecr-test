@@ -5,7 +5,7 @@ on:
       - "frontend/**"
       - "backend/**"
     branches:
-      - master
+      - main
   pull_request:
     branches:
       - master
@@ -22,7 +22,6 @@ jobs:
               - 'frontend/**'
             backend:
               - 'backend/**'
-        if: steps.filter.outputs.frontend == 'true'
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -32,19 +31,6 @@ jobs:
           REPOSITORY: docyfy
           IMAGE_TAG: ${{ steps.short-sha.outputs.sha }-fr
       - name: hamza
-        run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-        if: steps.filter.outputs.backend == 'true'
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-      - name: Build, tag, and push docker image to Amazon ECR
-        env:
-          REGISTRY: docyfy-stage
-          REPOSITORY: docyfy
-          IMAGE_TAG: ${{ steps.short-sha.outputs.sha }-back
-      - name: test
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
