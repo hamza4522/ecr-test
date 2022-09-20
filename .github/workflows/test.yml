@@ -22,12 +22,12 @@ jobs:
               - 'frontend/**'
             backend:
               - 'backend/**'
-        if: steps.filter.outputs.frontend == 'true'
+        if: steps.changes.outputs.frontend == 'true'
       - name: hamza
         run: |
           echo frontend
           echo haha
-        if: steps.filter.outputs.backend == 'true'
+        if: steps.changes.outputs.backend == 'true'
       - name: test
         run: |
            echo backend
