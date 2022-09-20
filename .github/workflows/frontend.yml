@@ -24,11 +24,11 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         env:
           region: us-east-1
-          REGISTRY: 712972998930.dkr.ecr.aws-region-1.amazonaws.com
-          REPOSITORY: 712972998930.dkr.ecr.us-east-1.amazonaws.com/ecr
-          IMAGE_TAG: ${{ github.sha }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ecr
+          IMAGE_TAG: nodejs_demo_image
       - name: frontend
         run: |
-            cd frontend
-            sudo docker build -t hamza:latest .
-            sudo docker push hamza:latest
+             cd frontend
+             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
