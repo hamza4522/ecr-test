@@ -8,20 +8,26 @@ on:
   pull_request:
     branches:
       - main
+env:
+      REPOSITORY: ecr
+      IMAGE_TAG: ${{ github.sha }}
 jobs:
   docker_image_push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-region: us-east-1
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-        env:
-          REGISTRY: ecr
-          REPOSITORY: ecr-test
-          IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}-backend
-      - name: hamza
+      - name: backend
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-       
+             cd backend
+             docker build -t $IMAGE_TAG .
+             docker tag $IMAGE_TAG ${{ secrets.REGISTRY }}/$REPOSITORY:$IMAGE_TAG
+             docker push ${{ secrets.REGISTRY }}/$REPOSITORY:$IMAGE_TAG
