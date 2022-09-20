@@ -26,7 +26,7 @@ jobs:
           region: us-east-1
           REGISTRY: 712972998930.dkr.ecr.us-east-1.amazonaws.com/ecr
           REPOSITORY: ecr-test
-          IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}-fr
+          IMAGE_TAG: test-fr
       - name: frontend
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
