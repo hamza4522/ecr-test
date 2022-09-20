@@ -31,6 +31,5 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
       - name: frontend
         run: |
-           docker build -t hamza .
-           docker push hamza
-        
+            docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
+            docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
