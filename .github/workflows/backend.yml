@@ -18,7 +18,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         env:
           REGISTRY: ecr
-          REPOSITORY: docyfy
+          REPOSITORY: ecr-test
           IMAGE_TAG: ${{ steps.short-sha.outputs.sha }-backend
       - name: hamza
         run: |
