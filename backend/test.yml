@@ -1,2 +1,47 @@
+name: docyfy-ecr-stage
+on:
+  push:
+    paths:
+    - 'frontend/**'
+    - 'backend/**'
+    branches:
+      - main  
+  pull_request:
+    branches:
+      - main
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+        - uses: actions/checkout@v3
+        - name: test
+          uses: dorny/paths-filter@v2
+          id: filter
+          with:
+           filters: |
+              frontend:
+                - 'frontend/**'
+              backend:
+                - 'backend/**'
+        # JOB to build and test backend code
+  backend:
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: ali
+        run : echo hello-world
 
-asdcfdsaf
+  # JOB to build and test frontend code
+  frontend:
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: hamza
+        run: echo hello
