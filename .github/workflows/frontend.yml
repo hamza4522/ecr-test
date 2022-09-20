@@ -30,4 +30,5 @@ jobs:
       - name: frontend
         run: |
             cd frontend
-            cat package.json
+            sudo docker build -t hamza:latest .
+            sudo docker push hamza:latest
