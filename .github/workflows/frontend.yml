@@ -11,7 +11,7 @@ on:
 env:
       REGISTRY: 712972998930.dkr.ecr.us-east-1.amazonaws.com
       REPOSITORY: ecr
-      IMAGE_TAG: nodejs_demo_image    
+      IMAGE_TAG: ${{ github.sha }}
 jobs:
   docker_image_push:
     runs-on: ubuntu-latest
