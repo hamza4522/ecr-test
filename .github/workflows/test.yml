@@ -5,7 +5,7 @@ on:
       - "frontend/**"
       - "backend/**"
     branches:
-      - main
+      - master
   pull_request:
     branches:
       - master
@@ -22,10 +22,19 @@ jobs:
               - 'frontend/**'
             backend:
               - 'backend/**'
+        if: steps.filter.outputs.frontend == 'true'
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - name: hamza
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        if: steps.filter.outputs.backend == 'true'
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: test
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
