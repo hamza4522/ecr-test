@@ -19,7 +19,7 @@ jobs:
         env:
           REGISTRY: ecr
           REPOSITORY: ecr-test
-          IMAGE_TAG: ${{ steps.short-sha.outputs.sha }-backend
+          IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}-backend
       - name: hamza
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
