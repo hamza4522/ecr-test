@@ -22,7 +22,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
      # - name: Build, tag, and push docker image to Amazon ECR
         env:
-          REGISTRY: ecr
+          REGISTRY: 712972998930.dkr.ecr.us-east-1.amazonaws.com/ecr
           REPOSITORY: ecr-test
           IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}-fr
       - name: hamza
