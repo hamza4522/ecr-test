@@ -9,7 +9,7 @@ on:
     branches:
       - main
 env:
-      REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      REGISTRY: 712972998930.dkr.ecr.us-east-1.amazonaws.com
       REPOSITORY: ecr
       IMAGE_TAG: nodejs_demo_image    
 jobs:
