@@ -30,6 +30,6 @@ jobs:
       - name: frontend
         run: |
              cd frontend
-             docker build -t sajid:latest .
-             docker tag sajid:latest 712972998930.dkr.ecr.us-east-1.amazonaws.com/ecr:sajid
-             docker push 712972998930.dkr.ecr.us-east-1.amazonaws.com/ecr:sajid
+             docker build -t $IMAGE_TAG .
+             docker tag $IMAGE_TAG 712972998930.dkr.ecr.us-east-1.amazonaws.com/$IMAGE_TAG
+             docker push 712972998930.dkr.ecr.us-east-1.amazonaws.com/IMAGE_TAG
