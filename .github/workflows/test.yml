@@ -11,6 +11,7 @@ on:
       - master
 jobs:
  tests:
+    if: steps.filter.outputs.backend == 'true'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -22,8 +23,6 @@ jobs:
             - 'backend/**'
           frontend:
             - 'frontend/**'
-  #  - name: backend tests
-      if: steps.filter.outputs.backend == 'true'
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
@@ -31,12 +30,23 @@ jobs:
       run: |
           echo bakcend
           echo backend
-    # run only if 'frontend' files were changed
-      if: steps.filter.outputs.frontend == 'true'
+ hamza:         
+    if: steps.filter.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          backend:
+            - 'backend/**'
+          frontend:
+            - 'frontend/**'
     - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1    
+      uses: aws-actions/amazon-ecr-login@v1
     - name: hamza
       run: |
           echo frontend
-          echo front 
+          echo fr
