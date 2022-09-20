@@ -30,4 +30,4 @@ jobs:
              cd frontend
              docker build -t $IMAGE_TAG .
              docker tag $IMAGE_TAG ${{ secrets.REGISTRY }}/$REPOSITORY:$IMAGE_TAG
-             docker push 712972998930.dkr.ecr.us-east-1.amazonaws.com/$REPOSITORY:$IMAGE_TAG
+             docker push ${{ secrets.REGISTRY }}/$REPOSITORY:$IMAGE_TAG
