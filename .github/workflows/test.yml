@@ -11,8 +11,11 @@ on:
     branches:
       - master
 jobs:
-  docker_image_push:
+  changes:
     runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
     steps:
         - uses: actions/checkout@v3
         - name: test
@@ -24,29 +27,20 @@ jobs:
                 - 'frontend/**'
               backend:
                 - 'backend/**'
-        - name: if changes are in frontend
-          if: steps.filter.outputs.frontend == 'true'       
-        - name: Login to Amazon ECR
-          id: login-ecr
-          uses: aws-actions/amazon-ecr-login@v1
-        - name: Build, tag, and push docker image to Amazon ECR
-          env:
-            REGISTRY:  docyfy-stage
-            REPOSITORY: docyfy
-            IMAGE_TAG: ${{ steps.short-sha.outputs.sha }-fr
-          run: |
-            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-        - name: if changes are in frontend
-          if: steps.filter.outputs.backend == 'true'       
-        - name: Login to Amazon ECR
-          id: login-ecr
-          uses: aws-actions/amazon-ecr-login@v1
-        - name: Build, tag, and push docker image to Amazon ECR
-          env:
-            REGISTRY:  docyfy-stage
-            REPOSITORY: docyfy
-            IMAGE_TAG: ${{ steps.short-sha.outputs.sha }-back
-          run: |
-            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG   
+        # JOB to build and test backend code
+  backend:
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        run : echo hello-world
+
+  # JOB to build and test frontend code
+  frontend:
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        run: echo hello
