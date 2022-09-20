@@ -20,10 +20,9 @@ jobs:
          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
          aws-region: us-east-1
       - name: Login to Amazon ECR Public
-        id: login-ecr-public
+      - name: Login to Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-        with:
-         registry-type: public
         env:
           region: us-east-1
           REGISTRY: public.ecr.aws/t6r2f1x4/ecr
@@ -31,5 +30,5 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
       - name: frontend
         run: |
-            docker build -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
-            docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
+            docker tag e9ae3c220b23 712972998930.dkr.ecr.us-east-1/ecr:latest .
+            docker push 712972998930.dkr.ecr.us-east-1/ecr:latest
