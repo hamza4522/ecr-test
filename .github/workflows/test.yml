@@ -28,7 +28,7 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
     - name: hamza
-        run: |
+      run: |
           echo bakcend
           echo backend
     # run only if 'frontend' files were changed
@@ -38,6 +38,6 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1    
     - name: hamza
-        run: |
+      run: |
           echo frontend
           echo front 
