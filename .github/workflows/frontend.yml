@@ -28,7 +28,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - name: frontend
         env: 
-            IMAGE_TAG: ${{ steps.commit.outputs.short }}
+            IMAGE_TAG: ${{ steps.commit.outputs.short }}-frontend
         run: |
              cd frontend
              docker build -t $IMAGE_TAG .
