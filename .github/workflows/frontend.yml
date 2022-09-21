@@ -10,12 +10,13 @@ on:
       - main
 env:
       REPOSITORY: ecr
-      IMAGE_TAG: ${{ github.sha }}
 jobs:
   docker_image_push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - id: commit
+        uses: pr-mpt/actions-commit-hash@v1
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -26,6 +27,8 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - name: frontend
+        env: 
+            IMAGE_TAG: ${{ steps.commit.outputs.short }}
         run: |
              cd frontend
              docker build -t $IMAGE_TAG .
