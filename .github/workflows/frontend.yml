@@ -10,7 +10,7 @@ on:
       - main
 env:
       REPOSITORY: ecr
-      IMAGE_TAG: $(git rev-parse --short "$GITHUB_SHA")
+      IMAGE_TAG: ${{ github.sha }}
 jobs:
   docker_image_push:
     runs-on: ubuntu-latest
